@@ -16,7 +16,7 @@ interface TaskListProps {
   onTaskUpdated: () => void;
 }
 
-export default function TaskList({ pendingTasks, completedTasks }: TaskListProps) {
+export default function TaskList({ pendingTasks, completedTasks, onTaskUpdated }: TaskListProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -46,7 +46,7 @@ export default function TaskList({ pendingTasks, completedTasks }: TaskListProps
             <p className="mt-1 text-sm text-gray-500">Create a new task to get started</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {pendingTasks.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}
@@ -81,7 +81,7 @@ export default function TaskList({ pendingTasks, completedTasks }: TaskListProps
             <p className="mt-1 text-sm text-gray-500">Completed tasks will appear here</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {completedTasks.map((task) => (
               <TaskCard key={task.id} task={task} />
             ))}

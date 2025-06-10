@@ -28,8 +28,8 @@ const formatDateTime = (dateString: string) => {
 
 export default function TaskCard({ task }: TaskCardProps) {
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-4 border border-gray-100 hover:border-blue-100 transition-all duration-200 shadow-sm hover:shadow-md">
-      <div className="flex items-start justify-between gap-3 mb-3">
+    <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-blue-100 transition-all duration-200 shadow-sm hover:shadow-md">
+      <div className="flex items-start justify-between gap-3 mb-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
             <h4 className="text-base font-semibold text-gray-900 truncate">{task.subject}</h4>
@@ -47,8 +47,8 @@ export default function TaskCard({ task }: TaskCardProps) {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 text-sm">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
           <div className="shrink-0 w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center">
             <svg className="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -60,7 +60,7 @@ export default function TaskCard({ task }: TaskCardProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2">
           <div className="shrink-0 w-5 h-5 rounded-full bg-purple-50 flex items-center justify-center">
             <svg className="w-3 h-3 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -72,8 +72,8 @@ export default function TaskCard({ task }: TaskCardProps) {
           </div>
         </div>
 
-        <div className="flex items-start gap-2 text-sm">
-          <div className="shrink-0 w-5 h-5 rounded-full bg-rose-50 flex items-center justify-center">
+        <div className="flex items-start gap-2">
+          <div className="shrink-0 w-5 h-5 rounded-full bg-rose-50 flex items-center justify-center mt-0.5">
             <svg className="w-3 h-3 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>

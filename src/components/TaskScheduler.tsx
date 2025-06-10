@@ -5,7 +5,7 @@ import TaskForm from './task-scheduler/TaskForm';
 import TaskList from './task-scheduler/TaskList';
 
 // Use relative URL for API calls to work with the proxy
-const API_BASE = 'https://scheduler-whmr.onrender.com/api/v1';
+const API_BASE = '/api/v1';
 const POLLING_INTERVAL = 30000; // 30 seconds
 
 interface TaskResponse {
@@ -66,19 +66,29 @@ export default function TaskScheduler() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Schedule New Task</h2>
-          <TaskForm onTaskCreated={fetchTasks} />
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Email Task Scheduler</h1>
+          <p className="text-gray-600">Schedule and manage your email tasks efficiently</p>
         </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Task List</h2>
-          <TaskList 
-            pendingTasks={pendingTasks} 
-            completedTasks={completedTasks} 
-            onTaskUpdated={fetchTasks}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-white rounded-xl shadow-sm">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4">Schedule New Task</h2>
+              <TaskForm onTaskCreated={fetchTasks} />
+            </div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4">Task List</h2>
+              <TaskList 
+                pendingTasks={pendingTasks} 
+                completedTasks={completedTasks} 
+                onTaskUpdated={fetchTasks}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
