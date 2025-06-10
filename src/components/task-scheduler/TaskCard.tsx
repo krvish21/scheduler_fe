@@ -1,4 +1,5 @@
 import { format, parseISO } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 
 interface TaskResponse {
   id: string;
@@ -8,16 +9,18 @@ interface TaskResponse {
   status: string;
   subject: string;
   to: string;
+  timezone: string;
 }
 
 interface TaskCardProps {
   task: TaskResponse;
 }
 
-const formatDateTime = (dateString: string) => {
+const formatDateTime = (dateString: string, timezone: string) => {
   try {
-    const date = parseISO(dateString);
-    return format(date, 'MMM d, yyyy h:mm a');
+    const utcDate = parseISO(dateString);
+    const zonedDate = utcToZonedTime(utcDate, timezone);
+    return format(zonedDate, 'MMM d, yyyy h:mm a');
   } catch (error) {
     console.error('Error formatting date:', error);
     return dateString;
@@ -40,7 +43,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             </span>
           </div>
           <p className="text-xs text-gray-500">
-            {formatDateTime(task.scheduled_for)}
+            {formatDateTime(task.scheduled_for, task.timezone)}
           </p>
         </div>
       </div>
