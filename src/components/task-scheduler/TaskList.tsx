@@ -16,7 +16,7 @@ interface TaskListProps {
   onTaskUpdated: () => void;
 }
 
-export default function TaskList({ pendingTasks, completedTasks, onTaskUpdated }: TaskListProps) {
+export default function TaskList({ pendingTasks, completedTasks }: TaskListProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
