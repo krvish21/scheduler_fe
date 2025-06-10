@@ -8,6 +8,7 @@ interface TaskResponse {
   status: string;
   subject: string;
   to: string;
+  timezone: string;
 }
 
 interface TaskListProps {
