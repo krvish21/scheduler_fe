@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_ENDPOINT;
+// Use relative URL for API calls to work with the proxy
+const API_BASE = '/api/v1';
 
 interface TaskFormProps {
     onTaskCreated: () => void;
@@ -26,7 +27,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
             const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
             console.log('UTC time:', utcDate.toISOString());
             
-            const response = await axios.post(`${API_URL}/task/create`, {
+            const response = await axios.post(`${API_BASE}/task/create`, {
                 subject,
                 email,
                 message,

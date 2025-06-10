@@ -4,7 +4,8 @@ import toast from 'react-hot-toast';
 import TaskForm from './task-scheduler/TaskForm';
 import TaskList from './task-scheduler/TaskList';
 
-const api = import.meta.env.VITE_API_ENDPOINT;
+// Use relative URL for API calls to work with the proxy
+const API_BASE = '/api/v1';
 const POLLING_INTERVAL = 30000; // 30 seconds
 
 interface TaskResponse {
@@ -25,8 +26,8 @@ export default function TaskScheduler() {
   const fetchTasks = useCallback(async () => {
     try {
       const [pendingResponse, completedResponse] = await Promise.all([
-        axios.get(`${api}/task/fetch/pending`),
-        axios.get(`${api}/task/fetch/completed`)
+        axios.get(`${API_BASE}/task/fetch/pending`),
+        axios.get(`${API_BASE}/task/fetch/completed`)
       ]);
 
       setPendingTasks(pendingResponse.data);
@@ -65,53 +66,21 @@ export default function TaskScheduler() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Task Scheduler</h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Manage your scheduled tasks and track their status
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-orange-400"></div>
-                <span className="text-sm text-gray-600">Pending</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
-                <span className="text-sm text-gray-600">Completed</span>
-              </div>
-            </div>
-          </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Schedule New Task</h2>
+          <TaskForm onTaskCreated={fetchTasks} />
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <TaskList
-              tasks={pendingTasks}
-              title="Pending Tasks"
-              emptyMessage="No pending tasks. Create a new task to get started!"
-            />
-            
-            <TaskList
-              tasks={completedTasks}
-              title="Completed Tasks"
-              emptyMessage="No completed tasks yet."
-            />
-          </div>
-
-          <div className="lg:col-span-1">
-            <TaskForm onTaskCreated={fetchTasks} />
-          </div>
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Task List</h2>
+          <TaskList 
+            pendingTasks={pendingTasks} 
+            completedTasks={completedTasks} 
+            onTaskUpdated={fetchTasks}
+          />
         </div>
-      </main>
+      </div>
     </div>
   );
 } 
