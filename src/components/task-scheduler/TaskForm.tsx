@@ -3,7 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 // Use relative URL for API calls to work with the proxy
-const API_BASE = '/api/v1';
+const API_BASE = 'https://scheduler-whmr.onrender.com/api/v1';
 
 interface TaskFormProps {
     onTaskCreated: () => void;

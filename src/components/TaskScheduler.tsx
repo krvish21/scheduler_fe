@@ -5,7 +5,7 @@ import TaskForm from './task-scheduler/TaskForm';
 import TaskList from './task-scheduler/TaskList';
 
 // Use relative URL for API calls to work with the proxy
-const API_BASE = '/api/v1';
+const API_BASE = 'https://scheduler-whmr.onrender.com/api/v1';
 const POLLING_INTERVAL = 30000; // 30 seconds
 
 interface TaskResponse {
