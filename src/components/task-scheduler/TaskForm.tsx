@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import TaskTemplate from './TaskTemplate';
 
 // Use relative URL for API calls to work with the proxy
 const API_BASE = 'https://scheduler-whmr.onrender.com/api/v1';
@@ -9,11 +10,17 @@ interface TaskFormProps {
     onTaskCreated: () => void;
 }
 
+const TASK_TYPES = [
+    { value: 'otp', label: 'OTP' },
+    { value: 'letter', label: 'Letter' }
+];
+
 const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
     const [subject, setSubject] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [scheduledFor, setScheduledFor] = useState('');
+    const [taskType, setTaskType] = useState('otp');
     const [isLoading, setIsLoading] = useState(false);
 
     const resetForm = () => {
@@ -21,6 +28,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         setEmail('');
         setMessage('');
         setScheduledFor('');
+        setTaskType('otp');
+    };
+
+    const handleTemplateChange = (template: string) => {
+        setMessage(template);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +53,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
                 email,
                 message,
                 scheduledFor: utcDate.toISOString(),
-                status: 'Pending'
+                status: 'Pending',
+                taskType
             });
 
             if (response.status === 201) {
@@ -73,6 +86,24 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         <form onSubmit={handleSubmit} className="bg-gray-50 rounded-xl p-6 space-y-6 border border-gray-200 h-full">
             <div className="grid grid-cols-1 gap-6">
                 <div className="space-y-1">
+                    <label htmlFor="taskType" className="block text-sm font-medium text-gray-700">Task Type</label>
+                    <select
+                        id="taskType"
+                        value={taskType}
+                        onChange={(e) => setTaskType(e.target.value)}
+                        required
+                        disabled={isLoading}
+                        className="block w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {TASK_TYPES.map((type) => (
+                            <option key={type.value} value={type.value}>
+                                {type.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-1">
                     <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Subject</label>
                     <input
                         type="text"
@@ -102,15 +133,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
 
                 <div className="space-y-1">
                     <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-                    <textarea
-                        id="message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        required
-                        disabled={isLoading}
-                        rows={3}
-                        className="block w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Enter your message"
+                    <TaskTemplate 
+                        taskType={taskType} 
+                        onTemplateChange={handleTemplateChange}
                     />
                 </div>
 
