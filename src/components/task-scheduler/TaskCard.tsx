@@ -1,5 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface TaskResponse {
   id: string;
@@ -14,7 +16,10 @@ interface TaskResponse {
 
 interface TaskCardProps {
   task: TaskResponse;
+  onTaskDeleted?: () => void;
 }
+
+const API_BASE = 'https://scheduler-whmr.onrender.com/api/v1';
 
 const formatDateTime = (dateString: string, timezone: string) => {
   try {
@@ -27,7 +32,30 @@ const formatDateTime = (dateString: string, timezone: string) => {
   }
 };
 
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, onTaskDeleted }: TaskCardProps) {
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${API_BASE}/task/delete/${task.id}`);
+      toast.success('Task deleted successfully!', {
+        duration: 4000,
+        style: {
+          background: '#10B981',
+          color: '#fff',
+        },
+      });
+      onTaskDeleted?.();
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      toast.error('Failed to delete task. Please try again.', {
+        duration: 4000,
+        style: {
+          background: '#EF4444',
+          color: '#fff',
+        },
+      });
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-blue-100 transition-all duration-200 shadow-sm hover:shadow-md">
       <div className="flex items-start justify-between gap-3 mb-4">
@@ -46,6 +74,17 @@ export default function TaskCard({ task }: TaskCardProps) {
             {formatDateTime(task.scheduled_for, task.timezone)}
           </p>
         </div>
+        {task.status === 'Completed' && (
+          <button
+            onClick={handleDelete}
+            className="shrink-0 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors duration-200"
+            title="Delete task"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        )}
       </div>
 
       <div className="space-y-3">
