@@ -74,7 +74,7 @@ export default function TaskCard({ task, onTaskDeleted }: TaskCardProps) {
             {formatDateTime(task.scheduled_for, task.timezone)}
           </p>
         </div>
-        {task.status === 'Completed' && (
+        {task.status === 'sent' && (
           <button
             onClick={handleDelete}
             className="shrink-0 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors duration-200"
