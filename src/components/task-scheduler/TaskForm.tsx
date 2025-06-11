@@ -42,32 +42,30 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         try {
             // Convert local time to UTC
             const localDate = new Date(scheduledFor);
-            console.log('Local time:', localDate.toLocaleString());
+            const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+            const utcScheduledFor = utcDate.toISOString();
             
-            // Create UTC date by adding the timezone offset
-            const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
-            console.log('UTC time:', utcDate.toISOString());
-            
-            const response = await axios.post(`${API_BASE}/task/create`, {
-                subject,
+            await axios.post(`${API_BASE}/task/create`, {
                 email,
+                subject,
                 message,
-                scheduledFor: utcDate.toISOString(),
-                status: 'Pending',
+                scheduledFor: utcScheduledFor,
                 taskType
             });
 
-            if (response.status === 201) {
-                toast.success('Task created successfully!', {
-                    duration: 4000,
-                    style: {
-                        background: '#10B981',
-                        color: '#fff',
-                    },
-                });
-                resetForm();
-                onTaskCreated();
-            }
+            toast.success('Task created successfully!', {
+                duration: 4000,
+                style: {
+                    background: '#10B981',
+                    color: '#fff',
+                },
+            });
+            
+            // Reset form after successful submission
+            resetForm();
+            
+            // Notify parent component
+            onTaskCreated?.();
         } catch (error) {
             console.error('Error creating task:', error);
             toast.error('Failed to create task. Please try again.', {
