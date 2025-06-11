@@ -42,7 +42,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         try {
             // Convert local time to UTC
             const localDate = new Date(scheduledFor);
-            const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+            // Add the timezone offset to convert to UTC
+            const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
             const utcScheduledFor = utcDate.toISOString();
             
             await axios.post(`${API_BASE}/task/create`, {
